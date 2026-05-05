@@ -2,13 +2,14 @@ pipeline {
     agent any
     parameters {
         string(name: 'DOCKER_IMAGE_VERSION', defaultValue: '', description: 'Docker Image Version')
+        choice(name: 'SERVICE', choices: ['backend', 'frontend'], description: 'Service to update')
     }
     stages {
         stage('Update deploy.yaml') {
             steps {
-                dir('backend') {
+                dir("${params.SERVICE}") {
                     sh 'git checkout main'
-                    sh "sed -i 's|huisuz/beatbuddy-backend:.*|huisuz/beatbuddy-backend:${params.DOCKER_IMAGE_VERSION}|g' deploy.yaml"
+                    sh "sed -i 's|huisuz/beatbuddy-${params.SERVICE}:.*|huisuz/beatbuddy-${params.SERVICE}:${params.DOCKER_IMAGE_VERSION}|g' deploy.yaml"
                     sh 'cat deploy.yaml'
                 }
             }
@@ -18,7 +19,7 @@ pipeline {
                 sh 'git config user.name "jenkins"'
                 sh 'git config user.email "jenkins@beatbuddy.com"'
                 sh 'git add .'
-                sh "git commit -m 'Update backend image to ${params.DOCKER_IMAGE_VERSION}'"
+                sh "git commit -m 'Update ${params.SERVICE} image to ${params.DOCKER_IMAGE_VERSION}'"
                 sshagent(['github-beatbuddy-k8s']) {
                     sh '''
                         mkdir -p ~/.ssh
