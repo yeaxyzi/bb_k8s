@@ -20,8 +20,12 @@ pipeline {
                 sh 'git add .'
                 sh "git commit -m 'Update backend image to ${params.DOCKER_IMAGE_VERSION}'"
                 sshagent(['github-beatbuddy-k8s']) {
-                    sh 'git remote set-url origin git@github.com:huisu73/beatbuddy-k8s.git'
-                    sh 'git push origin main'
+                    sh '''
+                        mkdir -p ~/.ssh
+                        ssh-keyscan github.com >> ~/.ssh/known_hosts
+                        git remote set-url origin git@github.com:huisu73/beatbuddy-k8s.git
+                        git push origin main
+                    '''
                 }
             }
         }
