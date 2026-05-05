@@ -26,12 +26,12 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: MAIL_USERNAME
+            - name: SPRING_MAIL_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: beatbuddy-secret
                   key: MAIL_USERNAME
-            - name: MAIL_PASSWORD
+            - name: SPRING_MAIL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: beatbuddy-secret
