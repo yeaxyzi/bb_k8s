@@ -18,6 +18,13 @@ spec:
                 name: beatbuddy-backend-svc
                 port:
                   number: 8080
+          - path: /images/
+            pathType: Prefix
+            backend:
+              service:
+                name: beatbuddy-backend-svc
+                port:
+                  number: 8080
           - path: /
             pathType: Prefix
             backend:
