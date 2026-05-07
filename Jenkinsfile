@@ -9,7 +9,7 @@ pipeline {
             steps {
                 dir("${params.SERVICE}") {
                     sh 'git checkout main'
-                    sh "sed -i 's|huisuz/beatbuddy-${params.SERVICE}:.*|huisuz/beatbuddy-${params.SERVICE}:${params.DOCKER_IMAGE_VERSION}|g' deploy.yaml"
+                    sh "sed -i 's|yeaxyzi/bb_${params.SERVICE}:.*|yeaxyzi/bb_${params.SERVICE}:${params.DOCKER_IMAGE_VERSION}|g' deploy.yaml"
                     sh 'cat deploy.yaml'
                 }
             }
@@ -20,11 +20,11 @@ pipeline {
                 sh 'git config user.email "jenkins@beatbuddy.com"'
                 sh 'git add .'
                 sh "git commit -m 'Update ${params.SERVICE} image to ${params.DOCKER_IMAGE_VERSION}'"
-                sshagent(['github-beatbuddy-k8s']) {
+                sshagent(['github-beatbuddy']) {
                     sh '''
                         mkdir -p ~/.ssh
                         ssh-keyscan github.com >> ~/.ssh/known_hosts
-                        git remote set-url origin git@github.com:huisu73/beatbuddy-k8s.git
+                        git remote set-url origin git@github.com:yeaxyzi/bb_k8s.git
                         git push origin main
                     '''
                 }
