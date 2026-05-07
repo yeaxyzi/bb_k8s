@@ -14,6 +14,15 @@ pipeline {
                 }
             }
         }
+        stage('Apply Kubernetes Secret') {
+            steps {
+                withCredentials([file(credentialsId: 'bb_secret', variable: 'SECRET_FILE')]) {
+                    sh '''
+                        kubectl apply -f "$SECRET_FILE"
+                    '''
+                }
+            }
+        }
         stage('Commit & Push') {
             steps {
                 sh 'git config user.name "jenkins"'
