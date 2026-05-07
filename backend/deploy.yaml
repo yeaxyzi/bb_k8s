@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: yeaxyzi/bb_backend:13
+          image: yeaxyzi/bb_backend:10
           resources:
             requests:
               memory: "128Mi"
